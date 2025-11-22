@@ -12,239 +12,446 @@
             theme: {
                 extend: {
                     colors: {
-                        'primary-dark': '#0f172a', // Slate-900
-                        'secondary-blue': '#1e3a8a', // Blue-800
-                        'accent-blue': '#3b82f6', // Blue-500
-                        'accent-cyan': '#06b6d4', // Cyan-500
-                        'text-light': '#f8fafc', // Slate-50
+                        'primary-dark': '#0a0f25',
+                        'secondary-blue': '#1a2e6d',
+                        'accent-blue': '#2563eb',
+                        'accent-cyan': '#0891b2',
+                        'accent-purple': '#7c3aed',
+                        'text-light': '#ffffff',
+                        'text-secondary': '#cbd5e1',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
+                        heading: ['Clash Grotesk', 'Inter', 'system-ui', 'sans-serif'],
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient-shift': 'gradientShift 8s ease-in-out infinite',
+                        'orbit': 'orbit 20s linear infinite',
                     },
                     keyframes: {
                         'float': {
                             '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        'gradientShift': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        'orbit': {
+                            '0%': { transform: 'rotate(0deg) translateX(100px) rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg) translateX(100px) rotate(-360deg)' },
                         }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
                     }
                 }
             }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Gaya kustom untuk gradasi gelap yang mendalam */
-        .bg-dark-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        /* Modern gradient backgrounds */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0a0f25 0%, #1a2e6d 50%, #0891b2 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease infinite;
         }
         .card-glass {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.6));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            box-shadow: 0 8px 32px rgba(31, 41, 55, 0.3);
+            background: linear-gradient(145deg, rgba(10, 15, 37, 0.7), rgba(26, 46, 109, 0.5));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
         }
-        .header-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        .card-glass::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #2563eb, #0891b2, #7c3aed, #2563eb);
+            background-size: 400%;
+            z-index: -1;
+            animation: gradientShift 3s ease infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .section-divider {
-            height: 2px;
-            background: linear-gradient(to right, transparent, #3b82f6, #06b6d4, transparent);
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
+        .card-glass:hover::before {
+            opacity: 1;
         }
-        .hover-glow {
-            transition: all 0.3s ease;
+        .social-badge {
+            background: linear-gradient(135deg, #2563eb, #0891b2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .hover-glow:hover {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-        }
-        .skill-badge {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            transition: all 0.3s ease;
-        }
-        .skill-badge:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        .social-badge:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
         .timeline-item {
             position: relative;
-            padding-left: 32px;
+            padding-left: 50px;
+            margin-bottom: 2rem;
         }
-        .timeline-item::before {
-            content: '';
+        .timeline-dot {
             position: absolute;
-            left: 8px;
-            top: 8px;
-            width: 16px;
-            height: 16px;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            border: 3px solid #0f172a;
+            background: linear-gradient(135deg, #2563eb, #0891b2);
+            border: 3px solid #0a0f25;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
         }
-        .timeline-item::after {
-            content: '';
+        .timeline-line {
             position: absolute;
-            left: 14px;
-            top: 24px;
-            bottom: -8px;
-            width: 4px;
-            background: linear-gradient(to bottom, #3b82f6, transparent);
+            left: 9px;
+            top: 25px;
+            bottom: -10px;
+            width: 2px;
+            background: linear-gradient(to bottom, #2563eb, transparent);
         }
-        .timeline-item:last-child::after {
-            display: none;
+        .skill-container {
+            perspective: 1000px;
         }
-        /* Custom scrollbar for aesthetics */
-        ::-webkit-scrollbar {
+        .skill-card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .skill-card:hover {
+            transform: rotateY(180deg);
+        }
+        .skill-front, .skill-back {
+            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        .skill-back {
+            transform: rotateY(180deg);
+        }
+        .floating-orb {
+            position: absolute;
             width: 8px;
+            height: 8px;
+            background: linear-gradient(45deg, #2563eb, #0891b2);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+            animation: orbit 15s linear infinite;
         }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(#3b82f6, #06b6d4);
-            border-radius: 10px;
+        .hero-shape {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
         }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
+        .stats-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(8, 145, 178, 0.2));
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(8, 145, 178, 0.3));
         }
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         .fade-in.appear {
             opacity: 1;
             transform: translateY(0);
         }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#2563eb, #0891b2);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0f25;
+        }
     </style>
 </head>
 <body class="bg-primary-dark text-text-light font-sans antialiased min-h-screen overflow-x-hidden">
 
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="floating-orb" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-orb" style="top: 40%; left: 85%; animation-delay: 2s;"></div>
+        <div class="floating-orb" style="top: 70%; left: 15%; animation-delay: 4s;"></div>
+        <div class="floating-orb" style="top: 10%; left: 75%; animation-delay: 6s;"></div>
+        <div class="hero-shape" style="top: 10%; right: 5%; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, #2563eb, transparent 70%);"></div>
+        <div class="hero-shape" style="bottom: 10%; left: 5%; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, #0891b2, transparent 70%);"></div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-primary-dark/90 backdrop-blur-md border-b border-secondary-blue/30 z-50">
-        <div class="max-w-6xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
-            <div class="text-xl md:text-2xl font-bold bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
-                Muhammad Ikhwan S.
+    <nav class="fixed top-0 w-full bg-primary-dark/95 backdrop-blur-xl border-b border-secondary-blue/30 z-50">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-accent-blue to-accent-cyan rounded-lg flex items-center justify-center">
+                    <span class="text-sm font-bold text-white">MIS</span>
+                </div>
+                <div class="text-xl md:text-2xl font-bold font-heading bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                    Ikhwan Sulaiman
+                </div>
             </div>
-            <div class="hidden md:flex space-x-6">
-                <a href="#tentang" class="hover:text-accent-blue transition-colors font-medium">Tentang</a>
-                <a href="#pendidikan" class="hover:text-accent-blue transition-colors font-medium">Pendidikan</a>
-                <a href="#organisasi" class="hover:text-accent-blue transition-colors font-medium">Organisasi</a>
-                <a href="#kontak" class="hover:text-accent-blue transition-colors font-medium">Kontak</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#tentang" class="hover:text-accent-blue transition-colors font-medium relative group">
+                    Tentang
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-blue to-accent-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#pendidikan" class="hover:text-accent-blue transition-colors font-medium relative group">
+                    Pendidikan
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-blue to-accent-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#organisasi" class="hover:text-accent-blue transition-colors font-medium relative group">
+                    Pengalaman
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-blue to-accent-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#kontak" class="hover:text-accent-blue transition-colors font-medium relative group">
+                    Kontak
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-blue to-accent-cyan transition-all group-hover:w-full"></span>
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="pt-20 pb-12 px-4 md:px-8">
-        <div class="max-w-6xl mx-auto">
+    <div class="pt-24 pb-16 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto">
 
             <!-- HERO SECTION -->
-            <section class="header-bg p-8 md:p-12 rounded-2xl shadow-2xl mb-12 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-accent-blue/10 to-accent-cyan/10 opacity-50"></div>
-                <div class="relative z-10 flex flex-col lg:flex-row items-center lg:justify-between">
-                    <div class="text-center lg:text-left mb-8 lg:mb-0 lg:max-w-lg">
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-light mb-4">
-                            Muhammad Ikhwan<br>Sulaiman
-                        </h1>
-                        <p class="text-xl md:text-2xl font-light text-accent-blue mb-6">
-                            Mahasiswa D-III Akuntansi | Future Accounting Professional
-                        </p>
-                        <p class="text-lg text-gray-300 max-w-md mx-auto lg:mx-0">
-                            Lahir di Batubara, 7 November 2007<br>
-                            Dibesarkan di Medang Deras dengan nilai kedisiplinan dan integritas
-                        </p>
-                        <div class="flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
-                            <a href="#kontak" class="px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full font-semibold text-primary-dark hover:opacity-90 transition-opacity shadow-lg">
-                                Hubungi Saya
-                            </a>
-                            <a href="#tentang" class="px-6 py-3 border-2 border-accent-blue/50 rounded-full font-semibold hover:bg-accent-blue/10 transition-colors">
-                                Pelajari Lebih Lanjut
-                            </a>
+            <section class="hero-gradient rounded-3xl shadow-2xl mb-20 relative overflow-hidden">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="relative z-10 p-8 md:p-16">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="text-center lg:text-left">
+                            <div class="inline-flex items-center bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-accent-blue/30">
+                                <span class="w-2 h-2 bg-accent-cyan rounded-full mr-2 animate-pulse"></span>
+                                <span class="text-sm font-medium text-accent-cyan">Future Accounting Professional</span>
+                            </div>
+                            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold font-heading tracking-tight text-text-light mb-6 leading-none">
+                                Muhammad<br>
+                                <span class="bg-gradient-to-r from-accent-blue via-accent-cyan to-accent-purple bg-clip-text text-transparent">Ikhwan</span>
+                                <br>Sulaiman
+                            </h1>
+                            <p class="text-xl md:text-2xl text-text-secondary mb-8 max-w-lg mx-auto lg:mx-0">
+                                Mahasiswa D-III Akuntansi di Politeknik Negeri Medan dengan passion di bidang keuangan dan manajemen bisnis
+                            </p>
+                            
+                            <!-- Stats Cards -->
+                            <div class="grid grid-cols-3 gap-4 mb-8 max-w-md mx-auto lg:mx-0">
+                                <div class="stats-card">
+                                    <div class="text-2xl font-bold text-accent-blue">2007</div>
+                                    <div class="text-xs text-text-secondary">Lahir</div>
+                                </div>
+                                <div class="stats-card">
+                                    <div class="text-2xl font-bold text-accent-cyan">4+</div>
+                                    <div class="text-xs text-text-secondary">Tahun Pendidikan</div>
+                                </div>
+                                <div class="stats-card">
+                                    <div class="text-2xl font-bold text-accent-purple">100%</div>
+                                    <div class="text-xs text-text-secondary">Integritas</div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                                <a href="#kontak" class="px-8 py-4 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-xl font-semibold text-primary-dark hover:opacity-90 transition-opacity shadow-xl hover:shadow-2xl transform hover:scale-105 transition-transform">
+                                    <i class="fas fa-paper-plane mr-2"></i>Hubungi Saya
+                                </a>
+                                <a href="#tentang" class="px-8 py-4 border-2 border-accent-blue/50 rounded-xl font-semibold hover:bg-accent-blue/10 transition-all backdrop-blur-sm">
+                                    <i class="fas fa-user mr-2"></i>Profil Lengkap
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-accent-blue to-accent-cyan rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-500 animate-float">
-                        <div class="w-28 h-28 md:w-36 md:h-36 bg-primary-dark rounded-full flex items-center justify-center">
-                            <span class="text-2xl md:text-3xl font-bold text-accent-blue">MIS</span>
+                        
+                        <div class="relative">
+                            <div class="w-64 h-64 md:w-80 md:h-80 mx-auto lg:mx-0 relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-accent-blue to-accent-cyan rounded-full animate-pulse-slow"></div>
+                                <div class="absolute inset-2 bg-primary-dark rounded-full flex items-center justify-center">
+                                    <div class="w-full h-full rounded-full bg-gradient-to-br from-secondary-blue to-primary-dark flex items-center justify-center">
+                                        <div class="text-6xl md:text-7xl font-bold text-transparent bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text">
+                                            MIS
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute -top-4 -right-4 w-16 h-16 bg-accent-purple/20 rounded-full flex items-center justify-center border-2 border-accent-purple/50">
+                                    <i class="fas fa-graduation-cap text-accent-purple text-xl"></i>
+                                </div>
+                                <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-accent-blue/20 rounded-full flex items-center justify-center border-2 border-accent-blue/50">
+                                    <i class="fas fa-chart-line text-accent-blue text-lg"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Social Media Badges - Top -->
+            <div class="mb-12">
+                <div class="flex justify-center space-x-6">
+                    <a href="https://www.linkedin.com/in/mhdikhwansulaiman" target="_blank" class="social-badge w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl">
+                        <i class="fab fa-linkedin-in text-white text-xl"></i>
+                    </a>
+                    <a href="https://wa.me/6285262450788" target="_blank" class="social-badge w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #25D366, #128C7E);">
+                        <i class="fab fa-whatsapp text-white text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/m.ikhwan.s_07" target="_blank" class="social-badge w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);">
+                        <i class="fab fa-instagram text-white text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/mhdikhwansulaiman" target="_blank" class="social-badge w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);">
+                        <i class="fab fa-instagram text-white text-xl"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" class="social-badge w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #333, #666);">
+                        <i class="fab fa-github text-white text-xl"></i>
+                    </a>
+                </div>
+            </div>
 
             <!-- ABOUT ME SECTION -->
-            <section id="tentang" class="card-glass p-6 md:p-8 rounded-2xl shadow-xl mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-accent-blue border-b border-secondary-blue pb-4 inline-block">
-                    Tentang Saya
-                </h2>
-                <div class="space-y-6 text-gray-200 leading-relaxed">
-                    <p class="text-lg">
-                        Saya adalah Muhammad Ikhwan Sulaiman, lahir pada 7 November 2007 di Batubara dan dibesarkan di lingkungan Medang Deras, sebuah daerah yang membentuk saya menjadi pribadi yang sederhana, pekerja keras, dan menghargai proses. Dari kecil, saya terbiasa dengan lingkungan yang menekankan nilai kedisiplinan, tanggung jawab, serta pentingnya pendidikan—nilai yang kemudian menjadi fondasi kuat dalam membentuk karakter saya hingga saat ini.
-                    </p>
-                    <p class="text-lg">
-                        Sebagai individu, saya dikenal sebagai orang yang tenang, sopan, serta mudah bergaul, namun tetap memegang prinsip dan fokus pada tujuan. Saya adalah tipe orang yang selalu ingin berkembang dan tidak ragu menerima tantangan baru. Saya senang mempelajari hal-hal yang berkaitan dengan keuangan, administrasi, manajemen bisnis, dan pengembangan diri. Selain itu, saya memiliki kemampuan adaptasi yang baik, sehingga mudah menyesuaikan diri dengan situasi baru maupun lingkungan kerja yang beragam.
-                    </p>
-                    <div class="bg-secondary-blue/30 p-6 rounded-xl border-l-4 border-accent-blue">
-                        <p class="text-xl font-semibold text-accent-cyan italic">
-                            "Tujuan hidup saya adalah meniti karier yang baik, stabil, dan bermanfaat, terutama di bidang keuangan atau manajemen. Saya percaya bahwa proses tidak pernah mengkhianati hasil."
+            <section id="tentang" class="card-glass p-8 md:p-10 rounded-3xl shadow-2xl mb-20 fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold font-heading mb-4 bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                        Tentang Saya
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan mx-auto rounded-full"></div>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6 text-text-secondary leading-relaxed">
+                        <p class="text-lg md:text-xl">
+                            Saya adalah Muhammad Ikhwan Sulaiman, lahir pada 7 November 2007 di Batubara dan dibesarkan di lingkungan Medang Deras, sebuah daerah yang membentuk saya menjadi pribadi yang sederhana, pekerja keras, dan menghargai proses. Dari kecil, saya terbiasa dengan lingkungan yang menekankan nilai kedisiplinan, tanggung jawab, serta pentingnya pendidikan—nilai yang kemudian menjadi fondasi kuat dalam membentuk karakter saya hingga saat ini.
                         </p>
+                        <p class="text-lg md:text-xl">
+                            Sebagai individu, saya dikenal sebagai orang yang tenang, sopan, serta mudah bergaul, namun tetap memegang prinsip dan fokus pada tujuan. Saya adalah tipe orang yang selalu ingin berkembang dan tidak ragu menerima tantangan baru. Saya senang mempelajari hal-hal yang berkaitan dengan keuangan, administrasi, manajemen bisnis, dan pengembangan diri.
+                        </p>
+                        <div class="bg-secondary-blue/40 p-6 rounded-2xl border-l-4 border-accent-blue backdrop-blur-sm">
+                            <p class="text-xl md:text-2xl font-semibold text-accent-cyan italic leading-relaxed">
+                                "Tujuan hidup saya adalah meniti karier yang baik, stabil, dan bermanfaat, terutama di bidang keuangan atau manajemen. Saya percaya bahwa proses tidak pernah mengkhianati hasil."
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-accent-blue/20 to-accent-cyan/20 p-6 rounded-2xl border border-accent-blue/30">
+                            <div class="text-3xl font-bold text-accent-blue mb-2">7</div>
+                            <div class="text-sm text-text-secondary">November 2007</div>
+                            <div class="text-xs text-text-secondary mt-1">Tanggal Lahir</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-accent-cyan/20 to-accent-purple/20 p-6 rounded-2xl border border-accent-cyan/30">
+                            <div class="text-3xl font-bold text-accent-cyan mb-2">Batubara</div>
+                            <div class="text-sm text-text-secondary">Sumatera Utara</div>
+                            <div class="text-xs text-text-secondary mt-1">Tempat Lahir</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 p-6 rounded-2xl border border-accent-purple/30">
+                            <div class="text-3xl font-bold text-accent-purple mb-2">D3</div>
+                            <div class="text-sm text-text-secondary">Akuntansi</div>
+                            <div class="text-xs text-text-secondary mt-1">Pendidikan</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-secondary-blue/20 to-primary-dark/20 p-6 rounded-2xl border border-secondary-blue/30">
+                            <div class="text-3xl font-bold text-text-light mb-2">Medang Deras</div>
+                            <div class="text-sm text-text-secondary">Lingkungan</div>
+                            <div class="text-xs text-text-secondary mt-1">Dibesarkan</div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- EDUCATION & ORGANIZATION SECTION -->
-            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+            <!-- EDUCATION & EXPERIENCE SECTION -->
+            <div class="grid lg:grid-cols-2 gap-12 mb-20">
                 
                 <!-- Pendidikan -->
-                <section id="pendidikan" class="card-glass p-6 md:p-8 rounded-2xl shadow-xl fade-in">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-accent-blue">Riwayat Pendidikan</h2>
+                <section id="pendidikan" class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading mb-8 bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                        Perjalanan Pendidikan
+                    </h2>
                     
-                    <div class="space-y-6">
+                    <div class="space-y-8">
                         <!-- D3 Akuntansi -->
-                        <div class="timeline-item p-4 bg-secondary-blue/40 rounded-xl hover-glow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h3 class="text-xl font-bold text-accent-blue">Diploma III Akuntansi</h3>
-                                <span class="bg-accent-blue/20 text-accent-blue px-3 py-1 rounded-full text-sm font-medium">Saat Ini</span>
+                        <div class="timeline-item card-glass p-6 rounded-2xl hover-glow relative">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-line"></div>
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-accent-blue mb-1">Diploma III Akuntansi</h3>
+                                    <p class="text-lg text-text-secondary">Politeknik Negeri Medan</p>
+                                </div>
+                                <span class="bg-accent-blue/20 text-accent-blue px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                                    2023 - Sekarang
+                                </span>
                             </div>
-                            <p class="text-lg text-gray-300 mb-2">Politeknik Negeri Medan (Polmed)</p>
-                            <p class="text-gray-300">
-                                Pilihan untuk mendalami bidang akuntansi bukan hanya karena relevansinya yang luas di dunia kerja, tetapi juga karena saya melihat akuntansi sebagai disiplin ilmu yang membutuhkan ketelitian, logika, dan integritas—tiga hal yang saya jadikan prinsip pribadi.
+                            <p class="text-text-secondary mb-4">
+                                Mendalami bidang akuntansi sebagai disiplin ilmu yang membutuhkan ketelitian, logika, dan integritas—tiga hal yang saya jadikan prinsip pribadi.
                             </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-accent-blue/20 text-accent-blue px-2 py-1 rounded text-xs">Akuntansi Keuangan</span>
+                                <span class="bg-accent-blue/20 text-accent-blue px-2 py-1 rounded text-xs">Perpajakan</span>
+                                <span class="bg-accent-blue/20 text-accent-blue px-2 py-1 rounded text-xs">Audit</span>
+                                <span class="bg-accent-blue/20 text-accent-blue px-2 py-1 rounded text-xs">Manajemen Biaya</span>
+                            </div>
                         </div>
 
                         <!-- SMA -->
-                        <div class="timeline-item p-4 bg-secondary-blue/30 rounded-xl hover-glow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h3 class="text-xl font-bold text-accent-cyan">Pendidikan Menengah Atas</h3>
-                                <span class="text-sm text-gray-400">2020 - 2023</span>
+                        <div class="timeline-item card-glass p-6 rounded-2xl hover-glow relative">
+                            <div class="timeline-dot" style="background: linear-gradient(135deg, #0891b2, #7c3aed);"></div>
+                            <div class="timeline-line" style="background: linear-gradient(to bottom, #0891b2, transparent);"></div>
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-accent-cyan mb-1">Pendidikan Menengah Atas</h3>
+                                    <p class="text-lg text-text-secondary">SMA Mitra Inalum</p>
+                                </div>
+                                <span class="bg-accent-cyan/20 text-accent-cyan px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                                    2020 - 2023
+                                </span>
                             </div>
-                            <p class="text-lg text-gray-300 mb-2">SMA Mitra Inalum</p>
-                            <p class="text-gray-300">
+                            <p class="text-text-secondary">
                                 Fase yang memperluas pandangan saya terhadap dunia dan membantu saya memahami arah masa depan yang ingin saya capai.
                             </p>
                         </div>
 
                         <!-- MTs -->
-                        <div class="timeline-item p-4 bg-secondary-blue/20 rounded-xl hover-glow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h3 class="text-xl font-bold text-gray-300">Pendidikan Menengah</h3>
-                                <span class="text-sm text-gray-400">2017 - 2020</span>
+                        <div class="timeline-item card-glass p-6 rounded-2xl hover-glow relative">
+                            <div class="timeline-dot" style="background: linear-gradient(135deg, #7c3aed, #2563eb);"></div>
+                            <div class="timeline-line" style="background: linear-gradient(to bottom, #7c3aed, transparent);"></div>
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-accent-purple mb-1">Pendidikan Menengah</h3>
+                                    <p class="text-lg text-text-secondary">MTs Al-Munawwarah</p>
+                                </div>
+                                <span class="bg-accent-purple/20 text-accent-purple px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                                    2017 - 2020
+                                </span>
                             </div>
-                            <p class="text-lg text-gray-300 mb-2">MTs Al-Munawwarah</p>
-                            <p class="text-gray-300">
-                                Mulai mengembangkan rasa percaya diri, kemampuan sosial, dan minat terhadap kegiatan organisasi.
+                            <p class="text-text-secondary">
+                                Mengembangkan rasa percaya diri, kemampuan sosial, dan minat terhadap kegiatan organisasi.
                             </p>
                         </div>
 
                         <!-- SD -->
-                        <div class="timeline-item p-4 bg-secondary-blue/10 rounded-xl hover-glow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h3 class="text-xl font-bold text-gray-400">Pendidikan Dasar</h3>
-                                <span class="text-sm text-gray-500">2011 - 2017</span>
+                        <div class="timeline-item card-glass p-6 rounded-2xl hover-glow relative">
+                            <div class="timeline-dot" style="background: linear-gradient(135deg, #2563eb, #0891b2);"></div>
+                            <div class="timeline-line" style="background: linear-gradient(to bottom, #2563eb, transparent);"></div>
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-text-light mb-1">Pendidikan Dasar</h3>
+                                    <p class="text-lg text-text-secondary">SDIT Al Ihya Tanjung Gading</p>
+                                </div>
+                                <span class="bg-secondary-blue/20 text-text-secondary px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                                    2011 - 2017
+                                </span>
                             </div>
-                            <p class="text-lg text-gray-300 mb-2">SDIT Al Ihya Tanjung Gading</p>
-                            <p class="text-gray-300">
+                            <p class="text-text-secondary">
                                 Menanamkan dasar-dasar akademik sekaligus nilai moral dan keislaman yang menjadi fondasi karakter saya.
                             </p>
                         </div>
@@ -252,59 +459,88 @@
                 </section>
 
                 <!-- Pengalaman Organisasi -->
-                <section id="organisasi" class="card-glass p-6 md:p-8 rounded-2xl shadow-xl fade-in">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-accent-blue">Pengalaman Organisasi</h2>
+                <section id="organisasi" class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading mb-8 bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                        Pengalaman & Keterampilan
+                    </h2>
                     
-                    <div class="space-y-6">
-                        <div class="p-6 bg-gradient-to-br from-secondary-blue/50 to-accent-blue/20 rounded-xl border border-accent-blue/30 hover-glow">
-                            <h3 class="text-2xl font-bold mb-3 text-accent-blue flex items-center">
-                                <i class="fas fa-users mr-3"></i>
+                    <div class="space-y-8">
+                        <div class="card-glass p-6 md:p-8 rounded-2xl hover-glow">
+                            <h3 class="text-2xl font-bold mb-4 text-accent-blue flex items-center">
+                                <i class="fas fa-users mr-3 text-2xl"></i>
                                 Himpunan Akuntansi Polmed
                             </h3>
-                            <p class="text-lg text-gray-300 mb-4">Anggota Aktif | Politeknik Negeri Medan</p>
-                            <ul class="space-y-3 text-gray-200">
-                                <li class="flex items-start">
+                            <p class="text-lg text-text-secondary mb-6">Anggota Aktif | Politeknik Negeri Medan</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-start">
                                     <i class="fas fa-check-circle text-accent-cyan mt-1 mr-3 flex-shrink-0"></i>
-                                    <span>Belajar bekerja dalam tim dan berkomunikasi dengan baik</span>
-                                </li>
-                                <li class="flex items-start">
+                                    <span class="text-text-secondary">Kolaborasi dalam tim multidisiplin</span>
+                                </div>
+                                <div class="flex items-start">
                                     <i class="fas fa-check-circle text-accent-cyan mt-1 mr-3 flex-shrink-0"></i>
-                                    <span>Mengembangkan kemampuan memanajemen kegiatan organisasi</span>
-                                </li>
-                                <li class="flex items-start">
+                                    <span class="text-text-secondary">Manajemen kegiatan organisasi</span>
+                                </div>
+                                <div class="flex items-start">
                                     <i class="fas fa-check-circle text-accent-cyan mt-1 mr-3 flex-shrink-0"></i>
-                                    <span>Berinteraksi dengan mahasiswa dari berbagai latar belakang</span>
-                                </li>
-                                <li class="flex items-start">
+                                    <span class="text-text-secondary">Komunikasi interpersonal</span>
+                                </div>
+                                <div class="flex items-start">
                                     <i class="fas fa-check-circle text-accent-cyan mt-1 mr-3 flex-shrink-0"></i>
-                                    <span>Meningkatkan leadership dan soft skills profesional</span>
-                                </li>
-                            </ul>
+                                    <span class="text-text-secondary">Networking profesional</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-secondary-blue/30 p-4 rounded-xl">
+                                <p class="text-sm text-text-secondary italic">
+                                    "Memberikan peluang besar untuk belajar bekerja dalam tim, berkomunikasi dengan baik, memanajemen kegiatan, serta berinteraksi dengan banyak mahasiswa dari berbagai latar belakang."
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="section-divider"></div>
-                        
-                        <!-- Keterampilan Inti -->
-                        <div>
+                        <!-- Skills Section -->
+                        <div class="skill-container">
                             <h3 class="text-2xl font-bold mb-6 text-accent-blue">Keterampilan Inti</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Ketelitian & Logika
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="skill-card h-24">
+                                    <div class="skill-front card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center">
+                                        <div class="text-2xl text-accent-blue mb-1">📊</div>
+                                        <div class="text-sm font-medium text-text-light">Analisis Keuangan</div>
+                                    </div>
+                                    <div class="skill-back card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center bg-gradient-to-br from-accent-blue/20 to-accent-cyan/20">
+                                        <div class="text-2xl text-accent-cyan mb-1">📈</div>
+                                        <div class="text-xs text-text-secondary text-center">Mampu menganalisis laporan keuangan dan membuat keputusan berbasis data</div>
+                                    </div>
                                 </div>
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Integritas Tinggi
+                                <div class="skill-card h-24">
+                                    <div class="skill-front card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center">
+                                        <div class="text-2xl text-accent-blue mb-1">🧮</div>
+                                        <div class="text-sm font-medium text-text-light">Akuntansi</div>
+                                    </div>
+                                    <div class="skill-back card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center bg-gradient-to-br from-accent-blue/20 to-accent-cyan/20">
+                                        <div class="text-2xl text-accent-cyan mb-1">💳</div>
+                                        <div class="text-xs text-text-secondary text-center">Menguasai prinsip akuntansi, perpajakan, dan audit</div>
+                                    </div>
                                 </div>
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Kerja Tim & Komunikasi
+                                <div class="skill-card h-24">
+                                    <div class="skill-front card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center">
+                                        <div class="text-2xl text-accent-blue mb-1">👥</div>
+                                        <div class="text-sm font-medium text-text-light">Kerja Tim</div>
+                                    </div>
+                                    <div class="skill-back card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center bg-gradient-to-br from-accent-blue/20 to-accent-cyan/20">
+                                        <div class="text-2xl text-accent-cyan mb-1">🤝</div>
+                                        <div class="text-xs text-text-secondary text-center">Kolaboratif dan mampu bekerja dalam tim lintas fungsi</div>
+                                    </div>
                                 </div>
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Adaptasi Baik
-                                </div>
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Manajemen Bisnis
-                                </div>
-                                <div class="skill-badge text-primary-dark font-semibold px-4 py-3 rounded-xl text-center shadow-lg">
-                                    Analisis Keuangan
+                                <div class="skill-card h-24">
+                                    <div class="skill-front card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center">
+                                        <div class="text-2xl text-accent-blue mb-1">🔄</div>
+                                        <div class="text-sm font-medium text-text-light">Adaptasi</div>
+                                    </div>
+                                    <div class="skill-back card-glass h-full rounded-xl p-4 flex flex-col justify-center items-center bg-gradient-to-br from-accent-blue/20 to-accent-cyan/20">
+                                        <div class="text-2xl text-accent-cyan mb-1">🌍</div>
+                                        <div class="text-xs text-text-secondary text-center">Cepat beradaptasi dengan lingkungan dan situasi baru</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -312,22 +548,26 @@
                         <!-- Values -->
                         <div class="mt-8">
                             <h3 class="text-2xl font-bold mb-4 text-accent-blue">Nilai Pribadi</h3>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="bg-secondary-blue/30 p-3 rounded-lg text-center">
-                                    <i class="fas fa-balance-scale text-accent-cyan mb-2 text-xl"></i>
-                                    <div class="text-sm font-medium">Disiplin</div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-secondary-blue/30 to-accent-blue/10 p-4 rounded-xl border border-accent-blue/30 text-center">
+                                    <i class="fas fa-balance-scale text-accent-blue text-2xl mb-2"></i>
+                                    <div class="font-semibold text-text-light">Disiplin</div>
+                                    <div class="text-xs text-text-secondary mt-1">Konsisten dan teratur</div>
                                 </div>
-                                <div class="bg-secondary-blue/30 p-3 rounded-lg text-center">
-                                    <i class="fas fa-hand-holding-heart text-accent-cyan mb-2 text-xl"></i>
-                                    <div class="text-sm font-medium">Tanggung Jawab</div>
+                                <div class="bg-gradient-to-br from-secondary-blue/30 to-accent-cyan/10 p-4 rounded-xl border border-accent-cyan/30 text-center">
+                                    <i class="fas fa-hand-holding-heart text-accent-cyan text-2xl mb-2"></i>
+                                    <div class="font-semibold text-text-light">Tanggung Jawab</div>
+                                    <div class="text-xs text-text-secondary mt-1">Amanah dan reliable</div>
                                 </div>
-                                <div class="bg-secondary-blue/30 p-3 rounded-lg text-center">
-                                    <i class="fas fa-graduation-cap text-accent-cyan mb-2 text-xl"></i>
-                                    <div class="text-sm font-medium">Pendidikan</div>
+                                <div class="bg-gradient-to-br from-secondary-blue/30 to-accent-purple/10 p-4 rounded-xl border border-accent-purple/30 text-center">
+                                    <i class="fas fa-graduation-cap text-accent-purple text-2xl mb-2"></i>
+                                    <div class="font-semibold text-text-light">Pendidikan</div>
+                                    <div class="text-xs text-text-secondary mt-1">Belajar sepanjang hayat</div>
                                 </div>
-                                <div class="bg-secondary-blue/30 p-3 rounded-lg text-center">
-                                    <i class="fas fa-lightbulb text-accent-cyan mb-2 text-xl"></i>
-                                    <div class="text-sm font-medium">Inovasi</div>
+                                <div class="bg-gradient-to-br from-secondary-blue/30 to-primary-dark/10 p-4 rounded-xl border border-text-secondary/30 text-center">
+                                    <i class="fas fa-lightbulb text-text-light text-2xl mb-2"></i>
+                                    <div class="font-semibold text-text-light">Inovasi</div>
+                                    <div class="text-xs text-text-secondary mt-1">Berfikir kreatif</div>
                                 </div>
                             </div>
                         </div>
@@ -336,58 +576,71 @@
             </div>
 
             <!-- CONTACT SECTION -->
-            <section id="kontak" class="card-glass p-8 md:p-10 rounded-2xl shadow-xl fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-accent-blue">Mari Terhubung</h2>
-                <p class="text-lg text-gray-300 text-center mb-10 max-w-2xl mx-auto">
-                    Saya selalu terbuka untuk berdiskusi, bertukar pikiran, atau menjalin kerjasama dalam bidang akuntansi, keuangan, dan manajemen bisnis.
-                </p>
+            <section id="kontak" class="card-glass p-10 md:p-12 rounded-3xl shadow-2xl fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold font-heading mb-4 bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
+                        Mari Terhubung
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+                        Saya selalu terbuka untuk berdiskusi, bertukar pikiran, atau menjalin kerjasama dalam bidang akuntansi, keuangan, dan manajemen bisnis.
+                    </p>
+                </div>
                 
-                <div class="grid md:grid-cols-2 gap-6 mb-10 max-w-4xl mx-auto">
-                    <div class="bg-secondary-blue/30 p-6 rounded-xl border-l-4 border-accent-blue">
-                        <h3 class="text-xl font-bold text-accent-blue mb-4 flex items-center">
+                <div class="grid md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
+                    <div class="card-glass p-6 rounded-2xl border-l-4 border-accent-blue">
+                        <h3 class="text-2xl font-bold text-accent-blue mb-4 flex items-center">
                             <i class="fas fa-envelope mr-3"></i>
                             Email
                         </h3>
-                        <a href="mailto:mhdikhwan2024@gmail.com" class="text-lg text-gray-300 hover:text-accent-blue transition-colors underline">
+                        <a href="mailto:mhdikhwan2024@gmail.com" class="text-lg text-text-secondary hover:text-accent-blue transition-colors underline hover:no-underline">
                             mhdikhwan2024@gmail.com
                         </a>
+                        <p class="text-sm text-text-secondary mt-2">Respons dalam 24 jam</p>
                     </div>
-                    <div class="bg-secondary-blue/30 p-6 rounded-xl border-l-4 border-accent-cyan">
-                        <h3 class="text-xl font-bold text-accent-cyan mb-4 flex items-center">
+                    <div class="card-glass p-6 rounded-2xl border-l-4 border-accent-cyan">
+                        <h3 class="text-2xl font-bold text-accent-cyan mb-4 flex items-center">
                             <i class="fab fa-whatsapp mr-3"></i>
                             WhatsApp
                         </h3>
-                        <a href="https://wa.me/6285262450788" class="text-lg text-gray-300 hover:text-accent-cyan transition-colors underline">
+                        <a href="https://wa.me/6285262450788" class="text-lg text-text-secondary hover:text-accent-cyan transition-colors underline hover:no-underline">
                             +62 852-6245-0788
                         </a>
+                        <p class="text-sm text-text-secondary mt-2">Tersedia jam kerja</p>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-6 text-accent-blue">Ikuti Saya</h3>
-                    <div class="flex justify-center space-x-6 text-2xl">
-                        <a href="https://www.linkedin.com/in/mhdikhwansulaiman" target="_blank" class="text-gray-400 hover:text-accent-blue transition-colors duration-300 hover:scale-110">
-                            <i class="fab fa-linkedin"></i>
+                    <h3 class="text-3xl font-bold mb-8 text-accent-blue">Ikuti Perjalanan Saya</h3>
+                    <div class="flex justify-center space-x-6">
+                        <a href="https://www.linkedin.com/in/mhdikhwansulaiman" target="_blank" class="social-badge w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl">
+                            <i class="fab fa-linkedin-in text-white text-2xl"></i>
                         </a>
-                        <a href="https://www.instagram.com/m.ikhwan.s_07" target="_blank" class="text-gray-400 hover:text-pink-400 transition-colors duration-300 hover:scale-110">
-                            <i class="fab fa-instagram"></i>
+                        <a href="https://wa.me/6285262450788" target="_blank" class="social-badge w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #25D366, #128C7E);">
+                            <i class="fab fa-whatsapp text-white text-2xl"></i>
                         </a>
-                        <a href="https://www.instagram.com/mhdikhwansulaiman" target="_blank" class="text-gray-400 hover:text-pink-400 transition-colors duration-300 hover:scale-110">
-                            <i class="fab fa-instagram"></i>
+                        <a href="https://www.instagram.com/m.ikhwan.s_07" target="_blank" class="social-badge w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);">
+                            <i class="fab fa-instagram text-white text-2xl"></i>
                         </a>
-                        <a href="https://github.com" target="_blank" class="text-gray-400 hover:text-gray-300 transition-colors duration-300 hover:scale-110">
-                            <i class="fab fa-github"></i>
+                        <a href="https://www.instagram.com/mhdikhwansulaiman" target="_blank" class="social-badge w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);">
+                            <i class="fab fa-instagram text-white text-2xl"></i>
+                        </a>
+                        <a href="https://github.com" target="_blank" class="social-badge w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, #333, #666);">
+                            <i class="fab fa-github text-white text-2xl"></i>
                         </a>
                     </div>
                 </div>
             </section>
 
             <!-- FOOTER -->
-            <footer class="text-center mt-12 p-6 text-gray-500">
-                <p class="text-sm">
-                    © 2025 Muhammad Ikhwan Sulaiman. Dibuat dengan semangat, integritas, dan dedikasi untuk masa depan yang gemilang.
+            <footer class="text-center mt-16 p-8 text-text-secondary">
+                <div class="inline-flex items-center space-x-2 bg-secondary-blue/30 backdrop-blur-sm px-6 py-3 rounded-full mb-6">
+                    <i class="fas fa-heart text-accent-cyan"></i>
+                    <span class="text-sm">Dibuat dengan semangat dan integritas</span>
+                </div>
+                <p class="text-lg mb-2">
+                    © 2025 Muhammad Ikhwan Sulaiman
                 </p>
-                <p class="text-xs mt-2 text-gray-600">
+                <p class="text-sm font-medium bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">
                     "Proses tidak pernah mengkhianati hasil"
                 </p>
             </footer>
@@ -395,7 +648,7 @@
     </div>
 
     <script>
-        // Simple fade-in animation on scroll
+        // Advanced fade-in animation on scroll
         document.addEventListener('DOMContentLoaded', function() {
             const fadeElements = document.querySelectorAll('.fade-in');
             
@@ -421,12 +674,24 @@
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
                         window.scrollTo({
-                            top: target.offsetTop - 80,
+                            top: target.offsetTop - 100,
                             behavior: 'smooth'
                         });
                     }
                 });
             });
+            
+            // Add hover effect to skill cards on mobile
+            if ('ontouchstart' in window) {
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    card.addEventListener('touchstart', function() {
+                        this.style.transform = 'rotateY(180deg)';
+                        setTimeout(() => {
+                            this.style.transform = 'rotateY(0deg)';
+                        }, 2000);
+                    });
+                });
+            }
         });
     </script>
 </body>
